@@ -1,3 +1,4 @@
+import handlerError from "@/middleware/handlerError.js";
 import supplier from "@/models/supplier.model.js";
 import user from "@/models/user.model.js";
 import { type Request, type Response } from "express";
@@ -51,7 +52,6 @@ const removeSupplier = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // 3. Verificação de Permissão: Deve ser o dono OU ser admin
     const isOwner = targetSupplier.createdBy.equals(creator._id);
     const isAdmin = creator.role === "admin";
 
@@ -77,8 +77,8 @@ const removeSupplier = async (req: Request, res: Response): Promise<void> => {
     }
 
     res.status(201).json({ success: true, message: "" });
-  } catch (error) {
-    console.log(error);
+  } catch (error: unknown) {
+    handlerError(res, error);
   }
 };
 
