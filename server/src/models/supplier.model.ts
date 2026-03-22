@@ -1,3 +1,5 @@
+import categorys from "@/enum/categorys.js";
+import ratings from "@/enum/ratings.js";
 import mongoose, { Schema, model, Document } from "mongoose";
 
 export interface ISupplier extends Document {
@@ -8,6 +10,7 @@ export interface ISupplier extends Document {
   sales: number;
   notice: number;
   rating: string;
+  category: string[];
   link: string;
   blocked: boolean;
   createdAt: Date;
@@ -39,8 +42,13 @@ const supplierSchema = new Schema<ISupplier>(
     },
     rating: {
       type: String,
-      enum: ["L5", "L6", "L7"],
+      enum: ratings,
       required: true,
+    },
+    category: {
+      type: [String],
+      enum: categorys,
+      maxlength: 3,
     },
     link: {
       type: String,
